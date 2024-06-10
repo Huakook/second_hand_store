@@ -1,0 +1,19 @@
+.nav_{
+    height: 65px;
+    background-color: rgb(98, 97, 93);
+}
+
+.nav-text{
+    color: whitesmoke;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 25px;
+}
+
+.ndhu{
+    font-size: 30px;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.dropdown-toggle::after {
+    color:aliceblue;
+}

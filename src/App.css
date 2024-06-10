@@ -1,0 +1,18 @@
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: #f1f890;
+  height: 100vh; /*100vh represents the full height of the viewport, regardless of the content on the page.*/
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 5vmin);
+  color: rgb(65, 55, 28);
+}
+
+.App-link {
+  color: #61dafb;
+}
