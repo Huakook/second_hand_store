@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  max-height: 100vw;
 }
 
 code {
@@ -19,7 +20,7 @@ code {
   width: 100vw;
 } 
 
-form {
+._form {
   margin-left: 60vw;
   margin-right: 20vw;
 }
