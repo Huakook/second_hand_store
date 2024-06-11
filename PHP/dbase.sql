@@ -11,11 +11,12 @@ CREATE TABLE if NOT exists `Product`(
     `name` varchar(50) NOT NULL,
     `AID` int NOT NULL,
     FOREIGN KEY (AID) REFERENCES Account( AID ),
-    `condition` int NOT NULL,
+    `image` varchar(255) NOT NULL,
+    `condition` varchar(20) NOT NULL,
     `price` int NOT NULL,
     `year` int NOT NULL,
     `amount` int NOT NULL,
-    `description` varchar(256)
+    `description` varchar(10000)
 );
 
 CREATE TABLE if NOT exists `Order`(

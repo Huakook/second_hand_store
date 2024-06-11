@@ -31,14 +31,15 @@ function Bar()
                         <li className="nav-item dropdown">
                         <Link className="nav-link dropdown-toggle" to="/#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <span className="nav-text">
-                                About Me
+                                About
                             </span>
                         </Link>
                         <ul className="dropdown-menu">
                             <li><a className="dropdown-item" href="/MyShop">MyShop</a></li>
-                            <li><a className="dropdown-item" href="/AccountInfo">Account Info</a></li>
-                            <li><hr className="dropdown-divider"/></li>
                             <li><a className="dropdown-item" href="/Chat">Chat</a></li>
+                            <li><a className="dropdown-item" href="/AccountInfo" onClick={Logout}>Account Info</a></li>
+                            <li><hr className="dropdown-divider"/></li>
+                            <li><a className="dropdown-item" href="/">Logout</a></li>
                         </ul>
                         </li>
                     </ul>
@@ -51,6 +52,11 @@ function Bar()
             </nav>
         </>
     );
+}
+
+function Logout()
+{
+    sessionStorage.setItem("Log" , 'N');
 }
 
 export default Bar ;

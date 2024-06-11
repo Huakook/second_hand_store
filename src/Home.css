@@ -1,0 +1,21 @@
+._card{
+    max-width: 15em;
+    min-width: 525px;
+}
+
+._img{
+    height: 300px;
+    width: 100%;
+    object-fit: cover;
+}
+
+._fix_height{
+    max-width:10vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.container_size{
+    width: 100%;
+}
