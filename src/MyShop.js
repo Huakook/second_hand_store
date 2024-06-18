@@ -20,6 +20,8 @@ export default function MyShop ()
     const [ vName , setVName ] = useState("vn");
     const [ vPicture , setVPicture ] = useState("vp");
     const [ edit , setEdit ] = useState(false); 
+    const [ show_ , setShow_ ]= useState(false); 
+    const [ status , setStatus ] = useState(""); 
     const [ product , setProduct ] = useState({
         AID: 0,
         PID: 0 ,
@@ -128,7 +130,6 @@ export default function MyShop ()
         //console.log( vPicture ); 
     }
 
-
     function showModal( event )
     {
         event.preventDefault();
@@ -141,7 +142,28 @@ export default function MyShop ()
             data: {'id': _id }, 
             dataType: 'json',
             success( res ){
-                //console.log( res );
+                console.log( res );
+                setProduct( res ) ; //no need to JSON => parse
+            }
+        });
+        //op(); 
+    }
+
+    function showModal_( event )
+    {
+        // $("#good_fullDescription").modal("show");
+        setShow_( true ); 
+        event.preventDefault();
+        const target = $( event.target );
+        const _id = target.attr("value");
+        //console.log( id ) ;
+        $.ajax({
+            type:'GET',
+            url: 'http://localhost:8000/queryAProduct.php',
+            data: {'id': _id }, 
+            dataType: 'json',
+            success( res ){
+                console.log( res );
                 setProduct( res ) ; //no need to JSON => parse
             }
         });
@@ -176,13 +198,16 @@ export default function MyShop ()
                 } else if (res.result === 1) {
                     alert('Added successfully!');
                 } else if (res.result === 2) {
-                    alert(res.msg);
+                    //alert(res.msg);
+                    alert("file uploading fails !"); 
                 }
             },
             error: function(xhr, status, error) {
                 console.error(xhr.responseText); // Log any errors
             }
         });
+        catchGood(); 
+        window.location.reload(); 
     }
 
     function fileInputChange( event )
@@ -426,12 +451,22 @@ export default function MyShop ()
     
     return(//container ->> in center; row ->> next row 
     <>
-        <div className='container mt-4'><h2>Received Orders</h2><hr/></div>
+        <div className='container mt-4'>
+            <h2>Received Orders
+                My Orders
+                <button className='btn btn-link ms-1' onClick={ () => setStatus("")}>All</button>
+                <button className='btn btn-link ms-1' onClick={ () => setStatus("requested")}>Requested</button>
+                <button className='btn btn-link ms-2' onClick={ () => setStatus("accepted")}>Accepted</button>
+                <button className='btn btn-link ms-2' onClick={ () => setStatus("rejected")}>Rejected</button>
+            </h2>
+            <hr/>
+        </div>
         {orders.length !== 0 ?
         <div className='container container_size mt-4'>
             <div className="row">
             {
                 orders.map(( o , index ) => (//it's horizontal ->> col-md2 ->> height:2/12
+                o.status.includes( status )?
                 <div className="dropdown" key={index}>
                     { o.name.includes( sessionStorage.getItem("search") ) ? <div className="btn btn-secondary dropdown-toggle card mb-3" key={index} type="button" id="dropdownOrderButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         {customerID !== o.CustomerID? <div className='container mt-4'><h5>Customer { customerNumber = customerNumber + 1 }</h5><hr/><div hidden>{ customerID = o.CustomerID }</div></div> :<></>}
@@ -443,7 +478,7 @@ export default function MyShop ()
                                 <div className="card-body">
                                     <h3 className="card-title">{o.name}</h3>
                                     <p className="card-text"></p>
-                                    <button value={o.PID} className="btn card-link btn-link p-0" data-bs-toggle="modal" data-bs-target="#fullDescription">Click the order for More details</button>
+                                    <button value={o.PID} className="btn card-link btn-link p-0">Click the order for More details</button>
                                     <p className="card-text"><small className="text-muted">Order Date{": "}{o.date}</small></p>
                                 </div>
                             </div>
@@ -468,7 +503,7 @@ export default function MyShop ()
                         </div>
                     </div>:<></>}
                     <div className="dropdown-menu" aria-labelledby="dropdownOrderButton">
-                        <button value={o.PID} className="dropdown-item btn card-link" data-bs-toggle="modal" data-bs-target="#fullDescription" onClick={ showModal }>Full Description</button>
+                        <button value={o.PID} className="dropdown-item btn card-link" data-bs-toggle="modal" data-bs-target="#order_fullDescription" onClick={ showModal }>Full Description</button>
                         { o.status === 'accepted' || o.status === 'finished' ?
                                 //<button value={o.OID} className="dropdown-item" data-bs-toggle="modal" data-bs-target="#chat" onClick={ _chat }>Chat</button>
                                 <button value={o.OID} className="dropdown-item" onClick={ _chat }>Chat</button>
@@ -482,11 +517,11 @@ export default function MyShop ()
                         <button value={o.OID} className="dropdown-item" onClick={ acceptOrder }>Accept the Order</button>
                         <small className="text-muted dropdown-item"></small>
                     </div>
-                </div>
+                </div>:<div key={index} hidden></div>
                 ))
             } 
             </div>
-            <div className="modal fade" id="fullDescription" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                <div className="modal fade" id="good_fullDescription" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
                     <div className="modal-dialog" role="document">
                         <div className="modal-content">
                             <div className="modal-header">
@@ -571,7 +606,7 @@ export default function MyShop ()
                         </div>
                     </div>
                 </div>
-        </div>   
+        </div>  
         :<div className='container'><div className='container container_size mt-4'>Your have no orders.</div></div>
         }
     <div className='container mt-3'><h2>My Goods</h2><hr/></div>
@@ -586,7 +621,7 @@ export default function MyShop ()
                                 <h5 className="modal-title" id="exampleModalLongTitle">Add Goods</h5>
                             </div>
                             <div className="modal-body">
-                                <form action='http://localhost:8000/addGoods.php' method="post" encType="multipart/form-data" onSubmit={ ( event ) => addGoods( event ) }>
+                                <form action='http://localhost:8000/addGoods.php' id="addGoodForm" method="post" encType="multipart/form-data" onSubmit={ ( event ) => addGoods( event ) }>
                                     <div className="input-group mb-3">
                                         <div className="input-group-prepend">
                                             <span className="input-group-text" id="basic-addon1">Name</span>
@@ -642,7 +677,7 @@ export default function MyShop ()
                                     </div>
                                     <div className="modal-footer"/> 
                                     <button type="submit" className="btn btn-primary m-1">Update</button>                                 
-                                    <button type="button" className="btn btn-secondary m-1" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" className="btn btn-secondary m-1" data-bs-dismiss="modal" onClick={() => $("#addGoodForm").trigger("reset")}>Close</button>
                                 </form>
                             </div>
                         </div>
@@ -665,7 +700,7 @@ export default function MyShop ()
                                     <li className="list-group-item">Price:{" "}{p.price}</li>
                                 </ul>
                         <div className="card-body">
-                            <button value={p.PID} className="btn card-link btn-primary" data-bs-toggle="modal" data-bs-target="#fullDescription" onClick={ showModal }>More details/Edit</button>
+                            <button value={p.PID} className="btn card-link btn-primary" data-bs-toggle="modal" data-bs-target="#order_fullDescription" onClick={ showModal }>More details/Edit</button>
                             <button value={p.PID} className="btn card-link btn-success" onClick={deleteGood}>Delete</button>
                         </div>         
 
@@ -675,28 +710,92 @@ export default function MyShop ()
                 ))
             }                      
             </div>         
-                {/* <div className="modal fade" id="fullDescription" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-                    <div className="modal-dialog" role="document">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h5 className="modal-title" id="exampleModalLongTitle">123 </h5>
-                            </div>
+            <div className="modal fade" id="order_fullDescription" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                <div className="modal-dialog" role="document">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <div className='col-6'><h5 className="modal-title" id="exampleModalLongTitle">{product.name}</h5></div>
+                            <div className='col-4'></div>
+                            <div className='col-2'><button className='btn btn-white btn-lg' onClick={() => setEdit(true)}>Edit</button></div>
+                        </div>
+                        {edit === false ?
                             <div className="modal-body">
-                                <img src = { product.image === '' ? "" : require( `./photo/${product.image}` ) } className='img-fluid cart_img' alt={product.description} />
-                                <div> Remaining: { product.amount === 0 ? "Sold Out" : product.amount } </div>
+                                <img src = { product.image === '' ? "" : require( `./photo/${product.image}` ) } className='img-fluid' alt={product.description}/>
+                                <div> Remaining: { product.amount } </div>
                                 <div> Condition: { product.condition } </div>
                                 <div> Price: { product.price } </div>
                                 <div> Year: { product.year } </div>
                                 <div> Description: { product.description } </div>
-                                <div className="modal-footer">                                         
-                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            </div>
-                        </div>
+                                <form action='http://localhost:8000/addToCart.php' method='get' onSubmit={ ( event ) => ( event ) }>
+                                    <div className="modal-footer">                                       
+                                    </div>
+                                </form>
+                            </div>      
+                            :
+                            <form action='http://localhost:8000/updateGood.php'  method="post" encType="multipart/form-data" onSubmit={ ( event ) => addGoods( event ) }>
+                                <div className="input-group mb-3">
+                                    <div className="input-group-prepend">
+                                        <span className="input-group-text" id="basic-addon1" >Name</span>
+                                    </div>
+                                    <input type="text" className="form-control" defaultValue={product.name} placeholder="Name" id="edit_Name" name="Name" aria-label="Name" aria-describedby="basic-addon1" pattern='[0-9a-zA-Z]+' maxLength={50} required/>
+                                </div>
+                                <div className="input-group mb-3">
+                                    <div className="input-group-prepend">
+                                        <span className="input-group-text">Upload(jpg/png)</span>
+                                    </div>
+                                    <div className="custom-file">
+                                        <input type="file" className="custom-file-input" id="edit_File" name="File" onChange={fileInputChange} accept=".jpg,.png" required/>
+                                        <label className="custom-file-label">Choose file</label>
+                                    </div>
+                                </div>
+                                <div className="input-group flex-nowrap m-1">
+                                    <div className="input-group-prepend">
+                                        <span className="input-group-text" id="basic-addon1" >Condition</span>
+                                    </div>
+                                    <select className='account_select' defaultValue={product.condition} id="edit_Condition" name="Condition">
+                                        <option value="BN"> Brand New </option> 
+                                        <option value="UN"> Unused </option> 
+                                        <option value="AN"> Almost New </option> 
+                                        <option value="U"> Used </option> 
+                                        <option value="SD"> Some Damaged </option> 
+                                        <option value="QD"> Quite Damaged </option>
+                                        <option value="BP"> Broken Parts </option>  
+                                    </select>
+                                </div>
+                                <div className="input-group mb-3">
+                                    <div className="input-group-prepend">
+                                        <span className="input-group-text" id="basic-addon1">Price</span>
+                                    </div>
+                                    <input type="text" className="form-control" defaultValue={product.price} placeholder="Price" id="edit_Price" name="Price" aria-label="Price" aria-describedby="basic-addon1" pattern="[0-9]+" maxLength={6} required/>
+                                </div>
+                                <div className="input-group mb-3">
+                                    <div className="input-group-prepend">
+                                        <span className="input-group-text" id="basic-addon1">Year</span>
+                                    </div>
+                                    <input type="text" className="form-control" defaultValue={product.year} placeholder="Year" id="edit_Year" name="Year" aria-label="Year" aria-describedby="basic-addon1" pattern="[0-9]+" maxLength={4} required/>
+                                </div>
+                                <div className="input-group mb-3">
+                                    <div className="input-group-prepend">
+                                        <span className="input-group-text" id="basic-addon1">Amount</span>
+                                    </div>
+                                    <input type="text" className="form-control" defaultValue={product.amount} placeholder="Amount" id="edit_Amount" name="Amount" aria-label="Amount" aria-describedby="basic-addon1" pattern="[0-9]+" max={20} required/>
+                                </div>
+                                <div className="input-group mb-3">
+                                    <div className="input-group-prepend">
+                                        <span className="input-group-text" id="basic-addon1">Description</span>
+                                    </div>
+                                    <textarea type="text" className="form-control" defaultValue={product.description} placeholder="Description" id="edit_Description" name="Description" aria-label="Description" aria-describedby="basic-addon1" maxLength={999}pattern='[0-9a-zA-Z,.+=-/?()[]{}:;!@#$%&*~<>]+' required/>
+                                </div>
+                                <div className="modal-footer"/> 
+                                <button type="submit" className="btn btn-primary m-1" id="editGood" name="editGood" value={product.PID} onClick={updateGood}>Update</button>                                 
+                                <button type="button" className="btn btn-secondary m-1" onClick={() => setEdit(false)}>Cancel</button>
+                            </form>    
+                        }
                     </div>
                 </div>
-            </div> */}
-        </div>        
-    </div> 
+            </div>
+        </div>
+    </div>     
     { isShow === true && 
         <div className="chat_modal center" id="chat">
             <div className="myshop_center modal-dialog modal-lg" role="document">
