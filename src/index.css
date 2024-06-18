@@ -13,7 +13,7 @@ code {
     monospace;
 }
 
-.wrapper {
+._wrapper {
   background: url('./photo/NDHU.png') no-repeat;
   background-size: 100vw; 
   height: 100vh;
@@ -21,24 +21,34 @@ code {
 } 
 
 ._form {
-  margin-left: 60vw;
-  margin-right: 20vw;
+  margin-left: 59vw;
+  margin-right: 17vw;
 }
 
-.bar{
-  margin-left: 60vw;
+._bar{
+  margin-left: 59vw;
   margin-right: 20vw;
   padding-top: 9vmax;
 }
 
-.barItem{
+._barItem{
   font-size: 40px;
 }
 
-.labelText{
+._labelText{
   font-size: 30px;
 }
 
-.inputText{
+._inputText{
   font-size: 27px;
+}
+
+._center
+{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
 }

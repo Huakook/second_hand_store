@@ -17,3 +17,8 @@
 .dropdown-toggle::after {
     color:aliceblue;
 }
+
+.username{
+    color: rgb(252, 252, 252);
+    text-decoration: underline;
+}

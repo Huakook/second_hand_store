@@ -1,0 +1,56 @@
+._card{
+    width: '80%';
+}
+
+._fix_height{
+    max-width:10vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+._card_body_{
+    min-width: 1000px;
+}
+
+.cart_img{
+    min-width:100%;
+    min-height: 100%;
+    object-fit: cover;
+}
+
+.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+    background-color: rgb(123, 154, 183) !important;
+    border: none;
+    border-color:none;
+}
+
+.btn-success, .btn-success:hover, .btn-success:active, .btn-success:visited {
+    background-color: rgb(200, 68, 68) !important;
+    border: none;
+    border-color: #96caff;
+}
+
+.btn-danger, .btn-danger:hover, .btn-danger:active, .btn-danger:visited {
+    background-color: rgb(166, 152, 107) !important;
+    border: none;
+}
+
+.cart_center
+{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+}
+
+.empty{
+    font-size: 50px;
+    font-weight: bold;
+}
+
+.chat_p{
+    background-color: #f5f6f7;
+}

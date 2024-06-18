@@ -1,0 +1,64 @@
+._card{
+    width: '80%';
+}
+
+._fix_height{
+    max-width:10vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+._card_body_{
+    min-width: 1000px;
+}
+
+.cart_img{
+    min-width:100%;
+    min-height: 100%;
+    object-fit: cover;
+}
+
+.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+    background-color: rgb(123, 154, 183) !important;
+    border: none;
+    border-color:none;
+    color:whitesmoke;
+}
+
+.btn-success, .btn-success:hover, .btn-success:active, .btn-success:visited {
+    background-color: rgb(200, 68, 68) !important;
+    border: none;
+    border-color: #96caff;
+    color:whitesmoke;
+}
+
+.btn-danger, .btn-danger:hover, .btn-danger:active, .btn-danger:visited {
+    background-color: rgb(65, 63, 59) !important;
+    border: none;
+    color:whitesmoke;
+}
+
+.btn-info, .btn-info:hover, .btn-info:active, .btn-info:visited {
+    background-color: rgb(111, 151, 103) !important;
+    border: none;
+    color:whitesmoke;
+}
+
+.myshop_center
+{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 50vw; 
+}
+
+.empty{
+    font-size: 50px;
+    font-weight: bold;
+}
+
+.account_select{
+    width: 100%; 
+}
