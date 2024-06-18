@@ -7,7 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import './ManageBar.css'
 import $ from 'jquery';
-import {Link} from 'react-router-dom';
+import {Link , useNavigate } from 'react-router-dom';
 
 function ManageBar()
 {
