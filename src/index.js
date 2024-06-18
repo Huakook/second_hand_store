@@ -15,9 +15,10 @@ import MyShop from './MyShop';
 import AccountInfo from './AccountInfo';
 import Chat from './Chat';
 import Bar from './Bar';
+import Manage from './Manage'; 
+import ManageBar from './ManageBar'; 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-sessionStorage.setItem("Log" , 'N' ) ;
 
 root.render(
   <React.StrictMode>
@@ -28,7 +29,7 @@ root.render(
 
 function Root()
 {
-    const [ bar , setBar ] = useState(<Bar/>);
+    const [ bar , setBar ] = useState(sessionStorage.getItem("Email") == 'yvette030717@gmail.com' ? <ManageBar/> : <Bar/> );
     const [ route , setRoute ] = useState(<LoginRoutes/>);
     return(
       <BrowserRouter>
@@ -48,11 +49,13 @@ function Root()
                   <Route path='/MyShop' element={<MyShop/>}/>
                   <Route path='/AccountInfo' element={<AccountInfo/>}/>
                   <Route path='/Chat' element={<Chat/>}/>
+                  <Route path='/Manage' element={<Manage/>}/>
             </Routes>
         );
     }
     function Index()
     {
+        setBar(<></>); 
         const [ page , setPage ] = useState(<Login/>);
         const [ ID , setID ] = useState( -1 );// -1 ->> verification is availabe 
         const Navigate = useNavigate();
@@ -103,9 +106,9 @@ function Root()
             setID( setTimeout( () => ( verificationTimeOut() ) , 120000 ) ); 
             //disable the forward button 
             window.history.pushState(null, null, window.location.href);
-    //        window.onpopstate = function(event) {
-    //          window.history.pushState(null, null, window.location.href);
-    //        };
+            window.onpopstate = function(event) {
+              window.history.pushState(null, null, window.location.href);
+            };
         }
         function verificationTimeOut()
         {
@@ -212,8 +215,17 @@ function Root()
                         sessionStorage.setItem("Email" , r["Email"] ) ;
                         sessionStorage.setItem("Name" , r["Name"] ) ;
                         sessionStorage.setItem("Picture" , r["Picture"] ) ;
-                        setBar(<Bar/>);
-                        Navigate('/Home');
+                        sessionStorage.setItem("search" , "" ) ;
+                        if( sessionStorage.getItem("Email") == 'yvette030717@gmail.com' )
+                        {
+                          sessionStorage.setItem("tableName" , 'account'); 
+                          setBar(<ManageBar/>); 
+                          Navigate('/Manage');
+                        }else{
+                          setBar(<Bar/>);
+                          Navigate('/Home');
+                        }
+                        
                     }
                 }
             })

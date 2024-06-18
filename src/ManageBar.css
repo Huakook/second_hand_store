@@ -1,24 +1,25 @@
-.nav_{
+.manage_nav{
     height: 65px;
-    background-color: rgb(98, 97, 93);
+    background-color: rgb(0, 0, 0);
 }
 
-.nav-text{
+.manage_nav-text{
     color: whitesmoke;
     font-family: Georgia, 'Times New Roman', Times, serif;
     font-size: 25px;
 }
 
-.ndhu{
+.manage_ndhu{
     font-size: 30px;
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: whitesmoke;
 }
 
 .dropdown-toggle::after {
     color:aliceblue;
 }
 
-.username{
+.manage_username{
     color: rgb(252, 252, 252);
     text-decoration: underline;
 }

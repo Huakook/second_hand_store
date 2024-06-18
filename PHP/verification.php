@@ -5,7 +5,7 @@
         $email = $_POST['Email'] ;
         $name = $_POST['Name'];
         $hash = password_hash( $_POST['Password'] , PASSWORD_DEFAULT );
-        $picture = './photo/' . $_POST['Picture'] . '.png';
+        $picture = '' . $_POST['Picture'] . '.png';
 
         include './connect.php';
         $sql = 'insert into account values( null , "' . $name . '" , "' . $email . '" , "' . $hash . '" , "' . $picture . '" );';

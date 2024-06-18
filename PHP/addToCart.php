@@ -10,15 +10,13 @@
         $aid = $query -> fetch( PDO::FETCH_ASSOC )['AID'] ; 
         $query = $conn -> query("select * from product where PID = " . $pid . ";" );
         $price = $query -> fetch( PDO::FETCH_ASSOC )['price']; 
-        
-    
 
         //check if the product has been added 
         $sql = 'select * from cart where PID = ' . $pid . ' and AID = ' . $aid . ';';
         $query = $conn -> query( $sql );
-        if( $query != NULL )
+        if( $query -> fetch( PDO::FETCH_ASSOC ) != NULL )
         {
-            echo json_encode( array( 'result' => 2 ) ) ; 
+            echo json_encode( array( 'result' => 2 , "p" => $query ) ) ; 
             exit(); 
         }
         // if it has not been added, insert the new data 
